@@ -89,6 +89,8 @@ for iPaths in range(nPaths):
                         avail = True
             if not avail:
                 continue
+            else:
+                lastreact = react
         else:
             lastreact = react
 

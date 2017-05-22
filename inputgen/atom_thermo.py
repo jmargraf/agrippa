@@ -6,7 +6,7 @@ import math
 import numpy as np
 
 if len(sys.argv) != 5:
-    print("Provide filename and atomnumbers")
+    print("Provide T (K), P(atm), m (AMU) and mult")
     quit()
 
 Temp = float(sys.argv[1])/3.1577464e5
@@ -25,7 +25,7 @@ Sel = kb*(math.log(Mult)) * Temp
 Utrans = 3.0/2.0 * kb * Temp
 Htherm = kb * Temp
 
-AtomCorr = Strans+Sel+Utrans+Htherm
+AtomCorr = -Strans-Sel+Utrans+Htherm
 
 print("S_trans*T = %s Ha" % Strans)
 print("S_el*T    = %s Ha" % Sel)
