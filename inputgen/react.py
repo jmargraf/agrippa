@@ -220,6 +220,7 @@ def CoM_shift(atom1,xyz1,atom2,xyz2,shift):
     return xyz1_new,xyz2_new
 
 
+
 def Mass(El):
     if(El=='H'):
         return 1.01
