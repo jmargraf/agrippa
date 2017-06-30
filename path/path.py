@@ -30,19 +30,21 @@ def Read_Reactions():
 print("reading reaction network")
 mollist,etot,reactions = Read_Reactions()
 
-#print(mollist)
-#print(etot)
-#print(reactions)
+print(mollist)
+print(etot)
+print(reactions)
 
-nPaths = 1000000
-startmol = 24
-endmol = 2
+nPaths = int(1e6)
+startmol = 89
+endmol = 6
 
 # run path search
 finalpaths = []
 
 print("running path search")
 for iPaths in range(nPaths):
+    if iPaths%10000 == 0:
+        print(iPaths/nPaths)
     Emax = -100000.0
     Estart = etot[startmol]
     molid = startmol
@@ -50,15 +52,17 @@ for iPaths in range(nPaths):
     #print("Path %s :" % iPaths)
     curpath = []
     lastreact = []
-    available = [20,21]
-    
+    available = [89,139]
+
     while iStep < 10:
+        molid = random.choice(available)
         decomp = []
         contingent = []
         flagdeco = False
         flagcont = False
 
         # search possible reactions
+        #print("    search possible reactions")
         for react in reactions:
             if react[0] == molid:
                 decomp.append(react)
@@ -66,6 +70,7 @@ for iPaths in range(nPaths):
                 contingent.append(react)
 
         # select reaction
+        #print("    select reaction")
         reactid=random.randrange(len(decomp)+len(contingent))
         if reactid > (len(decomp)-1):
             react = contingent[reactid-len(decomp)]
@@ -76,6 +81,7 @@ for iPaths in range(nPaths):
 
 
         # check reactions
+        #print("    check reactions")
         if(react == lastreact):
             continue
         elif(flagcont):
@@ -95,8 +101,9 @@ for iPaths in range(nPaths):
             lastreact = react
 
         # add to path and select next molid
+        #print("    add to path")
         if flagdeco:
-            dG = (-etot[react[0]] + etot[react[1]] + etot[react[2]])*627.5
+            dG = (-etot[react[0]] + etot[react[1]] + etot[react[2]])#*627.5
             if dG > Emax:
                 Emax = dG 
 
@@ -105,7 +112,7 @@ for iPaths in range(nPaths):
                         mollist[react[1]] + " (" + str(react[1]) + ") + " + 
                         mollist[react[2]] + " (" + str(react[2]) + ")  | dG =  " + str(dG) )
             #print(reastring)
-            curpath.append(reastring)            
+            curpath.append([reastring,dG,"deco",react[0],react[1],react[2]])            
             available.append(react[1])
             available.append(react[2])
      
@@ -114,15 +121,15 @@ for iPaths in range(nPaths):
                 finalpaths.append([curpath,Emax])
                 break
             else:
-                if (react[1]==20) or (react[1]==21):
-                    molid = react[2]
-                elif (react[2]==20) or (react[2]==21):
-                    molid = react[1]
-                else:
-                    molid = react[random.randint(1,2)]        
+                #if (react[1]==20) or (react[1]==21):
+                #    molid = react[2]
+                #elif (react[2]==20) or (react[2]==21):
+                #    molid = react[1]
+                #else:
+                molid = react[random.randint(1,2)]        
             
         elif flagcont:
-            dG = (+etot[react[0]] - etot[react[1]] - etot[react[2]])*627.5
+            dG = (+etot[react[0]] - etot[react[1]] - etot[react[2]])#*627.5
             if dG > Emax:
                 Emax = dG
 
@@ -131,7 +138,7 @@ for iPaths in range(nPaths):
                         mollist[react[2]] + " (" + str(react[2]) + ") -> " +
                         mollist[react[0]] + " (" + str(react[0]) + ")  | dG =  " + str(dG) )
             #print(reastring)
-            curpath.append(reastring)
+            curpath.append([reastring,dG,"cont",react[1],react[2],react[0]])       
             available.append(react[0])
 
             if (react[0] == endmol):
@@ -143,13 +150,13 @@ for iPaths in range(nPaths):
 
         iStep += 1
 
-# print best paths
+# print examples of best paths
 sortedpaths = sorted(finalpaths, key=lambda path: path[1])
 
 lastbar = 1000000.0
-printtop = 10
+printtop = 5
 iprint = 0
-print("printing lowest barrier paths:")
+print("printing low barrier example paths:")
 for path in sortedpaths:
     if iprint >= printtop:
         break
@@ -158,14 +165,40 @@ for path in sortedpaths:
     else:
         lastbar = path[1]
         for reaction in path[0]:
-            print(reaction)
-        print("    ! Emax = %s kcal mol-1" % (path[1]))
+            print(reaction[0])
+        print("    ! Emax = %s eV" % (path[1]))
         iprint += 1
 
 
+print("printing all lowest barrier reactions")
+print("    ! Emax = %s eV" % (sortedpaths[0][1]))
+lowbar = []
+for path in sortedpaths:
+    if path[1] > sortedpaths[0][1]:
+        break
+    else:
+        for reaction in path[0]:
+            oldflag = False
+            for oldreaction in lowbar:
+                if reaction[1:5] == oldreaction[1:5]:
+                    oldflag = True
+            if not oldflag:
+                print(reaction[0])
+                print(reaction[2],reaction[3],reaction[4],reaction[5])
+                lowbar.append(reaction)
 
+print("printing shortest path for lowest barrier reaction:")
+print("    ! Emax = %s eV" % (sortedpaths[0][1]))
+minlen = 100
+for path in sortedpaths:
+    if path[1] > sortedpaths[0][1]:
+        break
+    else:
+        if len(path[0])<minlen:
+            shortest = path[0]
+            minlen = len(path[0])
 
-
-
+for reaction in shortest:
+    print(reaction[0])
 
 
