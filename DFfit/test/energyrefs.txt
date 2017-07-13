@@ -1,0 +1,11 @@
+bh3 -281.28 0 bhhh 1
+alh3 -213.17 0 ahhh 1
+sih4 -324.95 0 ihhhh 1
+h2 -109.5 0 hh 1
+h2o -232.98 0 hho 1
+nh3 -298.01 0 nhhh 1
+co -259.73 0 co 1
+f2 -39.05 0 ff 1
+ph3 -242.27 0 phhh 1
+h2s -183.91 0 hhs 1
+cl2 -59.75 0 ll 1
