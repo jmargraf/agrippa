@@ -1,5 +1,6 @@
 import numpy as np
 from scipy.optimize import least_squares
+import mol_io as io
 
 def read_ref(refname):
     with open(refname,'r') as f:
@@ -65,12 +66,32 @@ def ErelCorrect(comp,Eref):
     return A
 
 def runorca(name,mult,par):
+    import subprocess
+    from subprocess import Popen
     Etot = 0.0
-    filename = name + '.out'
-    with open(filename,'r') as f:
-        data = list(f)
-    tmp = data[0].split()
-    Etot = par[0]*float(tmp[0]) + par[1]
+    xyz,atom,charge,spin = io.ReadXYZ(name)
+    keywords  = '! PBE MINIX def2/J \n'
+    parstring = ("%method \n"+
+                 "  XKappa  " + str(par[0]) + "\n" +
+                 "  XMuePBE " + str(par[1]) + "\n" +
+                 "end \n")
+    io.OrcaIn(name,keywords,parstring,atom,xyz,0,mult)
+    inpname = name + '.inp'
+    outname = name + '.out'
+
+    proc = Popen(['orca',inpname],stdout=subprocess.PIPE)
+
+    for line in proc.stdout.readlines():
+        data=line.split()
+        if len(data)>2:
+            if (data[0] == 'FINAL') and (data[1] == 'SINGLE'):
+                Etot = float(data[4])
+
+    #with open(filename,'r') as f:
+    #    data = list(f)
+    #tmp = data[0].split()
+    #Etot = par[0]*float(tmp[0]) + par[1]
+
     return Etot
 
 def model(x,mol):
@@ -79,23 +100,37 @@ def model(x,mol):
     #for o,par in enumerate(x):
     #   result += par*mol**o  
     Eref = runrefcalcs(x)
+    #print('Eref',Eref)
     result = runmolcalcs(x,mol,Eref) 
-
     return result
 
 def fun(x,mol,ref):
 # calculate error
-    return model(x,mol) - ref
+    result = (model(x,mol))*627.5
+    #print(result,ref)
+    return result - ref
 
 refname = 'molrefs.txt'
 refmols = 'energyrefs.txt'
 mol, ref = read_ref(refname)
-x0 = np.array([18.800,79.50000])
+x0 = np.array([0.80,0.20000])
 
 #print(mol)
 #print(ref)
 
-res = least_squares(fun, x0, jac='2-point', bounds=(-100,100), args=(mol,ref), verbose=2)
+res = least_squares(fun, x0, jac='2-point', bounds=(0,10), args=(mol,ref), verbose=2,diff_step=0.001)
 
-print(res.x)
+print("final parameters: ",res.x)
+#print("final residuals: ",res.fun)
+molnames = []
+with open(refname,'r') as f:
+    data = list(f)
+    for i,line in enumerate(data):
+        tmp = line.split()
+        molnames.append(tmp[0])
+
+for i,residual in enumerate(res.fun):
+    print(molnames[i],residual)
+
+#error = fun(res.x,mol,ref)
 
