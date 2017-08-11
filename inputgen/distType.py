@@ -5,17 +5,31 @@ import sys
 import mol_io as io
 import numpy as np
 
-def Set_Bondlength(xyz,iA,iB,shift):
+def Set_Bondlength(xyz,iA,iB,rnew):
+
+    coordA = np.array(xyz[iA+iFrame*nAtoms])
+    coordB = np.array(xyz[iB+iFrame*nAtoms])
+
+    vector = coordA-coordB
+
+    r = np.linalg.norm(vector)
+    shift = rnew-r
+    shiftvec = np.divide(vector,r)
+    shiftvec = np.multiply(shiftvec,shift)
+    coordB -= shiftvec
+
+    return [coordB[0],coordB[1],coordB[2]]
 
 
 
-if len(sys.argv) != 4:
+if len(sys.argv) != 5:
     print("Provide filename and atomnumbers")
     quit()
 
 name = sys.argv[1]
 atomA = sys.argv[2]
 atomB = sys.argv[3]
+rnew = float(sys.argv[4])
 
 xyz,atom,nAtoms = io.ReadXYZtraj(name)
 
@@ -36,7 +50,12 @@ for iFrame in range(nFrame):
 
             vector = coordA-coordB
 
-            distance = np.linalg.norm(vector)
+            r = np.linalg.norm(vector)
 
-            print(distance)
+            #print(r)
 
+            xyz[iB+iFrame*nAtoms] = Set_Bondlength(xyz,iA,iB,rnew)
+
+comment = atomA + atomB + ' = ' + str(rnew)
+
+io.PrintXYZ(comment,atom,xyz)

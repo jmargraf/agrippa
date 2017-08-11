@@ -67,6 +67,27 @@ def ReadXYZ(FileName):
 
     return xyz,atom,charge,spin
 
+def ReadAimsGeo():
+    name = 'geometry.in'
+    #nAtoms = 0
+    atoms = []
+    xyz = []
+    with open(name) as fi:
+        f = []
+        for line in fi:
+            tmp = line.strip()
+            if tmp == "":
+                break
+            elif tmp[0] == "#":
+                continue
+            else:
+                f.append(tmp)
+        for line in f:
+            atom = line.split()
+            xyz.append([float(atom[1]),float(atom[2]),float(atom[3])])
+            atoms.append(atom[4])
+    return xyz,atoms
+
 
 def ReadXYZtraj(FileName):
     name = FileName + ".xyz"
@@ -84,7 +105,7 @@ def ReadXYZtraj(FileName):
     for iFrame in range(nFrames):
         for i in range(nAtoms):
             data = f[i+2+iFrame*(nAtoms+2)].strip().split()
-            print(data)
+            #print(data)
             atom.append(data[0])
             xyz.append([float(data[1]),float(data[2]),float(data[3])])
 
