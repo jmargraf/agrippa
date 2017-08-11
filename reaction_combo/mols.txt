@@ -1,0 +1,142 @@
+C 0.0
+O 0.0
+CC 0.0
+CO 0.0
+OO 0.0
+CCC 0.0
+CCO 0.0
+COC 0.0
+OCO 0.0
+COO 0.0
+C1CC1 0.0
+C1CO1 0.0
+C1OO1 0.0
+C=C 0.0
+C=O 0.0
+O=O 0.0
+C=CC 0.0
+C=CO 0.0
+CC=O 0.0
+O=CO 0.0
+C1=CC1 0.0
+C1=CO1 0.0
+C#C 0.0
+C#CC 0.0
+C=C=C 0.0
+C#CO 0.0
+C=C=O 0.0
+O=C=O 0.0
+[CH3] 0.0
+[OH] 0.0
+[CH2]C 0.0
+[CH2]O 0.0
+C[O] 0.0
+[O]O 0.0
+C[CH]C 0.0
+[CH2]CC 0.0
+C[CH]O 0.0
+[CH2]CO 0.0
+CC[O] 0.0
+[CH2]OC 0.0
+O[CH]O 0.0
+[O]CO 0.0
+[CH2]OO 0.0
+CO[O] 0.0
+[CH]1CC1 0.0
+[CH]1CO1 0.0
+[CH]1OO1 0.0
+[CH]=C 0.0
+[CH]=O 0.0
+C=[C]C 0.0
+[CH]=CC 0.0
+[CH2]C=C 0.0
+C=[C]O 0.0
+[CH]=CO
+C=C[O]
+C[C]=O
+[CH2]C=O
+O=[C]O
+[O]C=O
+[C]1=CC1
+[CH]1C=C1
+[C]1=CO1
+[C]#C
+[C]#CC
+C#C[CH2]
+[CH]=C=C
+[C]#CO
+C#C[O]
+[CH]=C=O
+[CH2]
+[O]
+[CH]C
+[CH]O
+C[C]C
+[CH]CC
+[CH2]C[CH2]
+C[C]O
+[CH]CO
+[CH2]C[O]
+[CH]OC
+[CH2]O[CH2]
+O[C]O
+[O]C[O]
+[CH]OO
+[CH2]O[O]
+[C]1CC1
+[C]1CO1
+[C]1OO1
+[C]=C
+[C]=O
+[C]=CC
+[CH]=C[CH2]
+[CH]C=C
+[C]=CO
+[CH]=C[O]
+[CH]C=O
+[C]1C=C1
+[C]#[C]
+[C]#C[CH2]
+[CH]C#C
+[C]=C=C
+[CH]=C=[CH]
+[C]#C[O]
+[C]=C=O
+[CH]
+[C]C
+[C]O
+[C]CC
+[CH]C[CH2]
+[C]CO
+[CH]C[O]
+[C]OC
+[CH]O[CH2]
+[C]OO
+[CH]O[O]
+[C]=C[CH2]
+[CH]C=[CH]
+[C]C=C
+[C]=C[O]
+[C]C=O
+[C]#C[CH]
+[C]C#C
+[C]=C=[CH]
+[C]
+[C]C[CH2]
+[CH]C[CH]
+[C]C[O]
+[C]O[CH2]
+[CH]O[CH]
+[C]O[O]
+[C]=C[CH]
+[C]C=[CH]
+[C]C#[C]
+[C]=C=[C]
+[C]C[CH]
+[C]O[CH]
+[C]C=[C]
+[C]C[C]
+[C]O[C]
+[H]
+[H][H]
+[x]
