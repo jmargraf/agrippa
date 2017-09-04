@@ -34,9 +34,9 @@ print(mollist)
 print(etot)
 print(reactions)
 
-nPaths = int(1e6)
+nPaths = int(1e4)
 startmol = 89
-endmol = 6
+endmol = 2
 
 # run path search
 finalpaths = []
@@ -54,7 +54,7 @@ for iPaths in range(nPaths):
     lastreact = []
     available = [89,139]
 
-    while iStep < 10:
+    while iStep < 20:
         molid = random.choice(available)
         decomp = []
         contingent = []
